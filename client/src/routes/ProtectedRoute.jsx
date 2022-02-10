@@ -1,20 +1,14 @@
 import { CircularProgress } from "@chakra-ui/react";
 import React, { Suspense } from "react";
-import { Route } from "react-router-dom";
+import { Outlet } from "react-router";
 import AuthWrapper from "./AuthWrapper";
-import routes from "./routes"; // Route list
 
-const ProtectedRoutes = () => (
-
-    <Suspense fallback={<CircularProgress color="primary" />}>
-        {routes.map(({ component: Component, path, exact }) => (
-            <Route path={path} key={path}>
-                <AuthWrapper>
-                    <Component />
-                </AuthWrapper>
-            </Route>
-        ))}
+const ProtectedRoute = () => (
+    <Suspense fallback={<CircularProgress isIndeterminate color="green.300" />}>
+        <AuthWrapper>
+            <Outlet />
+        </AuthWrapper>
     </Suspense>
 );
 
-export default ProtectedRoutes;
+export default ProtectedRoute;

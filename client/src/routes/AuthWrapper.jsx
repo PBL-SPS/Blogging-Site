@@ -2,6 +2,7 @@ import { Box, CircularProgress } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router";
 import AxiosInst from "../axios";
 import {
     logout,
@@ -36,6 +37,8 @@ const AuthWrapper = ({ children, spinner = true }) => {
             ...res.data.data,
             user: admin.data.data,
         };
+    }, {
+        retry: false
     });
 
     useEffect(() => {
@@ -43,8 +46,11 @@ const AuthWrapper = ({ children, spinner = true }) => {
         if (isError) {
             dispatch(logout());
         }
-        return () => {};
+        return () => { };
     }, [isError]);
+
+
+    if (authState == "LOGGEDOUT") return <Navigate to="/" />;
 
     if ((authState === "LOGGINGIN" || isLoading) && spinner) {
         return (
@@ -55,7 +61,7 @@ const AuthWrapper = ({ children, spinner = true }) => {
                 justifyContent="center"
                 alignItems="center"
             >
-                <CircularProgress />
+                <CircularProgress isIndeterminate color="green.300" />
             </Box>
         );
     }
