@@ -41,8 +41,8 @@ router.delete("/:blogId", authenticateToken, async function (req, res, next) {
 // edit blog
 router.put(
     "/:blogId",
-    authenticateToken,
     blogMulter,
+    authenticateToken,
     async function (req, res, next) {
         try {
             let blog = await Blog.findById(req.params.blogId);
@@ -72,8 +72,8 @@ router.put(
 // create blog
 router.post(
     "/",
-    authenticateToken,
     blogMulter,
+    authenticateToken,
     async function (req, res, next) {
         try {
             const blog = new Blog({
