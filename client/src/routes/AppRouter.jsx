@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { ColorModeSwitcher } from '../components/ColorModeSwitcher';
 import { Logo } from '../components/Logo';
+import CreateBlog from '../pages/CreateBlog';
 import Private from '../pages/Private';
 import { setAuth } from '../redux/auth/slice';
 import ProtectedRoute from './ProtectedRoute';
@@ -14,6 +15,7 @@ const AppRouter = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Sample />} />
+        <Route path="create-blog" element={<CreateBlog />} />
         <Route path="private" element={<ProtectedRoute />}>
           <Route path="" element={<Private />} />
         </Route>

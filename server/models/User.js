@@ -1,9 +1,10 @@
 // create a mongoose user model with the fields name, username and password
 
 const mongoose = require("mongoose");
+const { MODELS } = require("../config/constants");
 
 const User = mongoose.model(
-    "User",
+    MODELS.USER,
     new mongoose.Schema(
         {
             name: {

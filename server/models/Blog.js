@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const { MODELS } = require("../config/constants");
 
 const Blog = mongoose.model(
-    "Blog",
+    MODELS.BLOG,
     new mongoose.Schema({
         title: {
             type: String,
@@ -11,13 +12,26 @@ const Blog = mongoose.model(
             type: String,
             required: true,
         },
+        description: {
+            type: String,
+            required: true,
+        },
         content: {
             type: String,
             required: true,
         },
+        isDraft: {
+            type: Boolean,
+            default: true,
+        },
         publishedAt: {
             type: Date,
             default: Date.now(),
+        },
+        publishedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: MODELS.USER,
+            required: true,
         },
     })
 );
