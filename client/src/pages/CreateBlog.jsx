@@ -14,10 +14,14 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import React from "react";
+import { Navigate } from "react-router";
 import Editor from "../components/Editor";
 import ImagePicker from "../components/ImagePicker";
+import useAuth from "../hooks/useAuth";
 
 const CreateBlog = () => {
+    const { isLoggedOut } = useAuth();
+    if (isLoggedOut) return <Navigate to="/" />;
     return (
         <Container maxW="7xl" py={4}>
             <HStack
@@ -27,7 +31,9 @@ const CreateBlog = () => {
             >
                 <Heading>Create Blog</Heading>
                 <HStack>
-                    <Button size={"lg"} colorScheme={"teal"}>Save</Button>
+                    <Button size={"lg"} colorScheme={"teal"}>
+                        Save
+                    </Button>
                     <HStack bg="gray.100" p={4} rounded="full">
                         <Text fontWeight={"bold"} color="gray.600">
                             Published

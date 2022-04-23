@@ -7,7 +7,7 @@ const initialState = {
         localStorage.getItem(LS_KEYS.IS_LOGGED_IN) === "1"
             ? "LOGGINGIN"
             : "LOGGEDOUT",
-    accessToken: "",
+    token: "",
     refreshToken: localStorage.getItem(LS_KEYS.TOKEN) || "",
     user: {
         id: "",
@@ -43,7 +43,7 @@ export const { setAuth, logout } = authSlice.actions;
 
 export const selectTokens = (state) => ({
     refreshToken: state.auth.refreshToken,
-    accessToken: state.auth.accessToken,
+    accessToken: state.auth.token,
 });
 
 export const selectUser = (state) => state.auth.user;

@@ -1,11 +1,11 @@
 import {
-  Grid,
-  Link as CLink,
-  Text,
-  VStack,
-  Box,
-  Code,
-  Button,
+    Grid,
+    Link as CLink,
+    Text,
+    VStack,
+    Box,
+    Code,
+    Button,
 } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -22,22 +22,24 @@ import { setAuth } from "../redux/auth/slice";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/newsletter" element={<Newsletter />} />
-        <Route path="create-blog" element={<ProtectedRoute />}>
-          <Route path="" element={<CreateBlog />} />
-        </Route>
-        <Route path="private" element={<ProtectedRoute />}>
-          <Route path="" element={<Private />} />
-        </Route>
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="login" element={<ProtectedRoute />}>
+                    <Route path="" element={<Login />} />
+                </Route>
+                <Route path="/newsletter" element={<Newsletter />} />
+                <Route path="create-blog" element={<ProtectedRoute />}>
+                    <Route path="" element={<CreateBlog />} />
+                </Route>
+                <Route path="private" element={<ProtectedRoute />}>
+                    <Route path="" element={<Private />} />
+                </Route>
+            </Routes>
+        </Router>
+    );
 };
 
 // const Sample = () => {

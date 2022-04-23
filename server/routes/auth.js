@@ -80,6 +80,7 @@ router.post("/refreshToken", async function (req, res, next) {
         }
         const { token: newToken, refreshToken } = generateTokens(user);
         return res.send({
+            user,
             token: newToken,
             refreshToken,
         });
