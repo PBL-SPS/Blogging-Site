@@ -1,24 +1,12 @@
-import {
-    Grid,
-    Link as CLink,
-    Text,
-    VStack,
-    Box,
-    Code,
-    Button,
-} from "@chakra-ui/react";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { ColorModeSwitcher } from "../components/ColorModeSwitcher";
-import { Logo } from "../components/Logo";
+import { Navigate } from "react-router";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import CreateBlog from "../pages/CreateBlog";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Newsletter from "../pages/Newsletter";
 import Private from "../pages/Private";
-import { setAuth } from "../redux/auth/slice";
 import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
@@ -26,17 +14,20 @@ const AppRouter = () => {
         <Router>
             <Navbar />
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<ProtectedRoute />}>
+                    <Route path="" element={<Home />} />
+                </Route>
                 <Route path="login" element={<ProtectedRoute />}>
                     <Route path="" element={<Login />} />
                 </Route>
                 <Route path="/newsletter" element={<Newsletter />} />
-                <Route path="create-blog" element={<ProtectedRoute />}>
+                <Route path="create-blog/:blogId" element={<ProtectedRoute />}>
                     <Route path="" element={<CreateBlog />} />
                 </Route>
                 <Route path="private" element={<ProtectedRoute />}>
                     <Route path="" element={<Private />} />
                 </Route>
+                <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>
     );

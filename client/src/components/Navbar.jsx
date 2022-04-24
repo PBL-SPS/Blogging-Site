@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import useAuth from "../hooks/useAuth";
+import NewBlog from "./NewBlog";
 
 const NavLink = ({ children }) => (
     <ChakraLink
@@ -60,6 +61,7 @@ const Navbar = () => {
                     </HStack>
                     <Flex alignItems={"center"}>
                         <Stack direction={"row"} spacing={7}>
+                            <NewBlog />
                             <Button onClick={toggleColorMode}>
                                 {colorMode === "light" ? (
                                     <MoonIcon />
