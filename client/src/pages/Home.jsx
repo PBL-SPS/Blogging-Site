@@ -14,20 +14,6 @@ import {
   Container,
 } from "@chakra-ui/react";
 
-const BlogTags = (props) => {
-  return (
-    <HStack spacing={2} marginTop={props.marginTop}>
-      {props.tags.map((tag) => {
-        return (
-          <Tag size={"md"} variant="solid" colorScheme="orange" key={tag}>
-            {tag}
-          </Tag>
-        );
-      })}
-    </HStack>
-  );
-};
-
 const BlogAuthor = (props) => {
   return (
     <HStack marginTop="2" spacing="2" display="flex" alignItems="center">
@@ -93,7 +79,6 @@ const Home = () => {
           flexDirection="column"
           justifyContent="center"
           marginTop={{ base: "3", sm: "0" }}>
-          <BlogTags tags={["Engineering", "Product"]} />
           <Heading marginTop="1">
             <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
               Blog article title
@@ -157,7 +142,6 @@ const Home = () => {
           flexDirection="column"
           justifyContent="center"
           marginTop={{ base: "3", sm: "0" }}>
-          <BlogTags tags={["Engineering", "Product"]} />
           <Heading marginTop="1">
             <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
               Blog article title
@@ -200,7 +184,6 @@ const Home = () => {
                 />
               </Link>
             </Box>
-            <BlogTags tags={["Engineering", "Product"]} marginTop="3" />
             <Heading fontSize="xl" marginTop="2">
               <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
                 Some blog title
@@ -237,7 +220,6 @@ const Home = () => {
                 />
               </Link>
             </Box>
-            <BlogTags tags={["Engineering", "Product"]} marginTop="3" />
             <Heading fontSize="xl" marginTop="2">
               <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
                 Some blog title
@@ -274,7 +256,6 @@ const Home = () => {
                 />
               </Link>
             </Box>
-            <BlogTags tags={["Engineering", "Product"]} marginTop="3" />
             <Heading fontSize="xl" marginTop="2">
               <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
                 Some blog title
@@ -311,7 +292,6 @@ const Home = () => {
                 />
               </Link>
             </Box>
-            <BlogTags tags={["Engineering", "Product"]} marginTop="3" />
             <Heading fontSize="xl" marginTop="2">
               <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
                 Some blog title
