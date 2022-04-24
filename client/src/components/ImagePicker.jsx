@@ -10,10 +10,19 @@ import {
     useColorModeValue,
     VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { BACKEND_URL } from "../utils/constants";
 
 const ImagePicker = ({ onChange, title, name, defaultUrl }) => {
-    const [file, setFile] = useState(defaultUrl);
+    const [file, setFile] = useState("");
+
+    useEffect(() => {
+        typeof defaultUrl === "string" &&
+            !!defaultUrl &&
+            setFile(BACKEND_URL + defaultUrl);
+
+        return () => {};
+    }, [defaultUrl]);
 
     if (!file)
         return (
@@ -27,7 +36,7 @@ const ImagePicker = ({ onChange, title, name, defaultUrl }) => {
                         border={"4px dashed"}
                         borderColor={useColorModeValue("gray.300", "gray.500")}
                         _hover={{
-                            bg: useColorModeValue("gray.200","gray.700"),
+                            bg: useColorModeValue("gray.200", "gray.700"),
                             cursor: "pointer",
                             borderColor: "gray.400",
                         }}
@@ -40,7 +49,7 @@ const ImagePicker = ({ onChange, title, name, defaultUrl }) => {
                     id={name}
                     onChange={(e) => {
                         setFile(e.target.files[0]);
-                        // onChange(e)
+                        onChange(e.target.files[0]);
                     }}
                     type="file"
                     display={"none"}
@@ -51,17 +60,26 @@ const ImagePicker = ({ onChange, title, name, defaultUrl }) => {
 
     if (file)
         return (
-            <VStack  maxW={"sm"}>
+            <VStack maxW={"sm"}>
                 <Image
-                    src={URL.createObjectURL(file)}
-                    
+                    src={
+                        typeof file === "string"
+                            ? file
+                            : URL.createObjectURL(file)
+                    }
                     maxW={"sm"}
                     maxH="200px"
                     objectFit={"cover"}
                     border={"4px dashed"}
                     borderColor="gray.300"
                 />
-                <Button size={"sm"} onClick={() => setFile(null)}>
+                <Button
+                    size={"sm"}
+                    onClick={() => {
+                        setFile("");
+                        onChange("");
+                    }}
+                >
                     Remove Image
                 </Button>
             </VStack>

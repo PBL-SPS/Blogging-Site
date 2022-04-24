@@ -12,21 +12,27 @@ import {
 import React from "react";
 import useAuth from "../hooks/useAuth";
 import PosterImage from "../assets/img/Ws1s82d-avengers-wallpaper-hd.jpg";
+import useGetBlogById from "../hooks/useGetBlogById";
+import moment from "moment";
+import { BACKEND_URL } from "../utils/constants";
+import { useParams } from "react-router";
 
 const BlogDetails = () => {
   const { user } = useAuth();
+  const { blogId } = useParams();
+  const { data } = useGetBlogById(blogId);
   return (
     <Container maxW={"5xl"} p="12">
       <Box>
         <Box>
           <HStack>
-            <Avatar name="Sanket Kulkarni" />
+            <Avatar name={data?.publishedBy?.name} />
             <VStack style={{ marginLeft: 20 }} alignItems={"start"}>
-              <Text as={"b"}>Sanket Kulkarni</Text>
+              <Text as={"b"}>{data?.publishedBy?.name}</Text>
               <Box>
                 <HStack>
                   <Text as={"abbr"} color="#c7c7c7" fontSize={"15"}>
-                    Mar 22, 2022
+                    {moment(data?.publishedAt).format("LL")}
                   </Text>
                   <Text as={"abbr"} color="#c7c7c7" fontSize={"15"}>
                     {" "}
@@ -37,48 +43,24 @@ const BlogDetails = () => {
             </VStack>
           </HStack>
         </Box>
-        <Box marginTop={"8"}>
-          <Heading>This is test blog</Heading>
+        <Box justifyContent={"center"} alignItems={"center"} marginTop={"8"}>
+          <Heading>{data?.title}</Heading>
           <Image
-            src={PosterImage}
+            alignSelf={"center"}
+            src={BACKEND_URL + data?.poster}
             alt="Poster Image"
             height={"100%"}
             width={"100%"}
             marginTop={"5"}
           />
-          <Box marginTop={"10"}>
-            <Text fontSize={"20"}>
-              lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
+          <Box marginTop={"7"}>
+            <Text fontSize={"20"} as={"cite"}>
+              {data?.description}
             </Text>
             <br />
-            <Text fontSize={"20"}>
-              lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            </Text>
             <br />
-            <Text fontSize={"20"}>
-              lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            </Text>
             <br />
-            <Text fontSize={"20"}>
-              lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            </Text>
-            <br />
+            <div dangerouslySetInnerHTML={{ __html: data?.content }} />
           </Box>
         </Box>
       </Box>

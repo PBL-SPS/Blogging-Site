@@ -16,12 +16,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 module.exports = (req, res, next) => {
+    if (typeof req.body?.poster === "string") return next();
     upload.single("poster")(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return next(err);
         } else if (err) {
             return next(err);
         }
+
+        // console.log(req.file)
 
         if (req.file) {
             req.body.poster = "uploads/images/" + req.file.filename;

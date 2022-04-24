@@ -51,18 +51,23 @@ router.put(
             let blog = await Blog.findById(req.params.blogId);
             // console.log(blog)
             if (!blog) throw new restErrors.NotFoundError("Blog not found");
-            if (req.body?.poster) {
+            if (
+                typeof req.body?.poster == "string" &&
+                req.body.poster !== blog?.poster
+            ) {
                 if (
-                    await fs
+                    !!blog.poster &&
+                    (await fs
                         .access(path.join(__dirname, "../public", blog.poster))
                         .then(() => true)
-                        .catch(() => false)
+                        .catch(() => false))
                 ) {
                     await fs.unlink(
                         path.join(__dirname, "../public", blog.poster)
                     );
                 }
             }
+           
             await blog.update(req.body);
             blog = await Blog.findById(req.params.blogId);
             res.send(blog);
