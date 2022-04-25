@@ -33,7 +33,14 @@ router.get("/:blogId", async function (req, res, next) {
 router.delete("/:blogId", authenticateToken, async function (req, res, next) {
     try {
         const blog = await Blog.findById(req.params.blogId);
-        await fs.unlink(path.join(__dirname, "../public", blog.poster));
+        if (
+            !!blog.poster &&
+            (await fs
+                .access(path.join(__dirname, "../public", blog.poster))
+                .then(() => true)
+                .catch(() => false))
+        )
+            await fs.unlink(path.join(__dirname, "../public", blog.poster));
         await blog.remove();
         res.send(blog);
     } catch (error) {
@@ -67,7 +74,7 @@ router.put(
                     );
                 }
             }
-           
+
             await blog.update(req.body);
             blog = await Blog.findById(req.params.blogId);
             res.send(blog);
