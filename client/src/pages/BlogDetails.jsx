@@ -1,6 +1,8 @@
 import {
   Avatar,
   Box,
+  Center,
+  CircularProgress,
   Container,
   Heading,
   HStack,
@@ -18,9 +20,17 @@ import { BACKEND_URL } from "../utils/constants";
 import { useParams } from "react-router";
 
 const BlogDetails = () => {
-  const { user } = useAuth();
   const { blogId } = useParams();
-  const { data } = useGetBlogById(blogId);
+  const { data, isLoading } = useGetBlogById(blogId);
+
+  if (isLoading) {
+    return (
+      <Center>
+        <CircularProgress isIndeterminate color="green.300" />
+      </Center>
+    );
+  }
+
   return (
     <Container maxW={"5xl"} p="12">
       <Box>

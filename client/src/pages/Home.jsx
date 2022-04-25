@@ -7,18 +7,25 @@ import {
   Text,
   Divider,
   HStack,
-  Tag,
   Wrap,
   WrapItem,
   useColorModeValue,
   Container,
   Avatar,
+  Icon,
+  Menu,
+  MenuButton,
+  Button,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import useGetBlog from "../hooks/useGetBlog";
 import moment from "moment";
 import { BACKEND_URL } from "../utils/constants";
 import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
+import { AiOutlineMore } from "react-icons/ai";
+import { useNavigate } from "react-router";
 
 const BlogAuthor = (props) => {
   return (
@@ -36,29 +43,35 @@ const Home = () => {
   const { isLoggedIn } = useAuth();
   let blogs = [];
   blogs = isLoggedIn ? data : data.filter((blog) => blog.isDraft === false);
+  const navigate = useNavigate();
+
+  const editBlog = (id) => {
+    navigate(`/create-blog/${id}`);
+  };
+
   return (
     <Container maxW={"7xl"} p="12">
       <Heading as="h1">Top Articles</Heading>
       {blogs
         ?.filter((item) => item.isTop)
         .map((item) => (
-          <Link to={`/blog-details/${item._id}`}>
+          <Box
+            marginTop={{ base: "1", sm: "5" }}
+            display="flex"
+            flexDirection={{ base: "column", sm: "row" }}
+            justifyContent="space-between">
             <Box
-              marginTop={{ base: "1", sm: "5" }}
               display="flex"
-              flexDirection={{ base: "column", sm: "row" }}
-              justifyContent="space-between">
+              flex="1"
+              marginRight="3"
+              position="relative"
+              alignItems="center">
               <Box
-                display="flex"
-                flex="1"
-                marginRight="3"
-                position="relative"
-                alignItems="center">
-                <Box
-                  width={{ base: "100%", sm: "85%" }}
-                  zIndex="2"
-                  marginLeft={{ base: "0", sm: "5%" }}
-                  marginTop="5%">
+                width={{ base: "100%", sm: "85%" }}
+                zIndex="2"
+                marginLeft={{ base: "0", sm: "5%" }}
+                marginTop="5%">
+                <Link to={`/blog-details/${item._id}`}>
                   <ChakraLink
                     textDecoration="none"
                     _hover={{ textDecoration: "none" }}>
@@ -69,32 +82,36 @@ const Home = () => {
                       objectFit="contain"
                     />
                   </ChakraLink>
-                </Box>
-                <Box zIndex="1" width="100%" position="absolute" height="100%">
-                  <Box
-                    bgGradient={useColorModeValue(
-                      "radial(orange.600 1px, transparent 1px)",
-                      "radial(orange.300 1px, transparent 1px)"
-                    )}
-                    backgroundSize="20px 20px"
-                    opacity="0.4"
-                    height="100%"
-                  />
-                </Box>
+                </Link>
               </Box>
-              <Box
-                display="flex"
-                flex="1"
-                flexDirection="column"
-                justifyContent="center"
-                marginTop={{ base: "3", sm: "0" }}>
-                <Heading marginTop="1">
+              <Box zIndex="1" width="100%" position="absolute" height="100%">
+                <Box
+                  bgGradient={useColorModeValue(
+                    "radial(orange.600 1px, transparent 1px)",
+                    "radial(orange.300 1px, transparent 1px)"
+                  )}
+                  backgroundSize="20px 20px"
+                  opacity="0.4"
+                  height="100%"
+                />
+              </Box>
+            </Box>
+            <Box
+              display="flex"
+              flex="1"
+              flexDirection="column"
+              justifyContent="center"
+              marginTop={{ base: "3", sm: "0" }}>
+              <Heading marginTop="1">
+                <Link to={`/blog-details/${item._id}`}>
                   <ChakraLink
                     textDecoration="none"
                     _hover={{ textDecoration: "none" }}>
                     {item?.title}
                   </ChakraLink>
-                </Heading>
+                </Link>
+              </Heading>
+              <Link to={`/blog-details/${item._id}`}>
                 <Text
                   as="p"
                   marginTop="2"
@@ -102,13 +119,30 @@ const Home = () => {
                   fontSize="lg">
                   {item?.description}
                 </Text>
-                <BlogAuthor
-                  name={item?.publishedBy?.name}
-                  date={moment(item.publishedAt).format("LL")}
-                />
-              </Box>
+              </Link>
+              <BlogAuthor
+                name={item?.publishedBy?.name}
+                date={moment(item.publishedAt).format("LL")}
+              />
             </Box>
-          </Link>
+            <Box>
+              <Menu>
+                <MenuButton>
+                  <Icon w={10} h={10} as={AiOutlineMore} />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    isDisabled={isLoggedIn ? false : true}
+                    onClick={(e) => editBlog(item._id)}>
+                    Edit
+                  </MenuItem>
+                  <MenuItem isDisabled={isLoggedIn ? false : true}>
+                    Delete
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Box>
+          </Box>
         ))}
       <Heading as="h2" marginTop="20">
         Latest articles
@@ -118,44 +152,68 @@ const Home = () => {
         {blogs
           ?.filter((item) => !item.isTop)
           .map((item) => (
-            <Link to={`/blog-details/${item._id}`}>
-              <WrapItem
-                width={{ base: "100%", sm: "45%", md: "45%", lg: "30%" }}>
-                <Box w="100%">
-                  <Box borderRadius="lg" overflow="hidden">
-                    <ChakraLink
-                      textDecoration="none"
-                      _hover={{ textDecoration: "none" }}>
-                      <Image
-                        transform="scale(1.0)"
-                        src={BACKEND_URL + item.poster}
-                        alt="Poster of Blog"
-                        objectFit="contain"
-                        width="100%"
-                        transition="0.3s ease-in-out"
-                        _hover={{
-                          transform: "scale(1.05)",
-                        }}
-                      />
-                    </ChakraLink>
+            <WrapItem width={{ base: "100%", sm: "45%", md: "45%", lg: "30%" }}>
+              <Box w="100%">
+                <HStack alignItems={"start"}>
+                  <Box>
+                    <Box borderRadius="lg" overflow="hidden">
+                      <Link to={`/blog-details/${item._id}`}>
+                        <ChakraLink
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}>
+                          <Image
+                            transform="scale(1.0)"
+                            src={BACKEND_URL + item.poster}
+                            alt="Poster of Blog"
+                            objectFit="contain"
+                            width="100%"
+                            transition="0.3s ease-in-out"
+                            _hover={{
+                              transform: "scale(1.05)",
+                            }}
+                          />
+                        </ChakraLink>
+                      </Link>
+                    </Box>
+                    <Link to={`/blog-details/${item._id}`}>
+                      <Heading fontSize="xl" marginTop="2">
+                        <ChakraLink
+                          textDecoration="none"
+                          _hover={{ textDecoration: "none" }}>
+                          {item.title}
+                        </ChakraLink>
+                      </Heading>
+                    </Link>
+                    <Link to={`/blog-details/${item._id}`}>
+                      <Text as="p" fontSize="md" marginTop="2">
+                        {item.description}
+                      </Text>
+                    </Link>
+                    <BlogAuthor
+                      name={item?.publishedBy?.name}
+                      date={moment(item.publishedAt).format("LL")}
+                    />
                   </Box>
-                  <Heading fontSize="xl" marginTop="2">
-                    <ChakraLink
-                      textDecoration="none"
-                      _hover={{ textDecoration: "none" }}>
-                      {item.title}
-                    </ChakraLink>
-                  </Heading>
-                  <Text as="p" fontSize="md" marginTop="2">
-                    {item.description}
-                  </Text>
-                  <BlogAuthor
-                    name={item?.publishedBy?.name}
-                    date={moment(item.publishedAt).format("LL")}
-                  />
-                </Box>
-              </WrapItem>
-            </Link>
+                  <Box>
+                    <Menu>
+                      <MenuButton>
+                        <Icon w={10} h={10} as={AiOutlineMore} />
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem
+                          isDisabled={isLoggedIn ? false : true}
+                          onClick={(e) => editBlog(item._id)}>
+                          Edit
+                        </MenuItem>
+                        <MenuItem isDisabled={isLoggedIn ? false : true}>
+                          Delete
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  </Box>
+                </HStack>
+              </Box>
+            </WrapItem>
           ))}
       </Wrap>
     </Container>
