@@ -3,4 +3,4 @@ export const LS_KEYS = {
     TOKEN: "TOKEN",
 };
 
-export const BACKEND_URL = "http://localhost:3000/";
+export const BACKEND_URL = "https://bloggersps.herokuapp.com/";
